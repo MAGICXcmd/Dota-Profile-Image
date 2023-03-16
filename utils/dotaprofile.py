@@ -1,7 +1,6 @@
-from io import BytesIO
 import requests
+from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
-
 from utils.parse import Parse, Rank
 
 
@@ -23,7 +22,7 @@ class DotaProfile:
         self.capture_this()
 
     def capture_this(self):
-         # Fonts
+        # Fonts
         nickname_font = self.__setup_font('OpenSans-Bold', 22)
         lastmath_text = self.__setup_font('OpenSans-Regular', 11)
         lastmath_data = self.__setup_font('OpenSans-SemiBold', 11)
@@ -35,50 +34,49 @@ class DotaProfile:
         draw = ImageDraw.Draw(img)
 
         # Resize
-        avatar = self.__take_avatar().resize((93, 93), resample = Image.Resampling.LANCZOS)
+        avatar = self.__take_avatar().resize((93, 93), resample=Image.Resampling.LANCZOS)
         img.paste(avatar, (25,21))
 
         # Heroes images paste
-        heroes_images = [x.resize((21, 21), resample = Image.Resampling.LANCZOS) for x in self.heroes_images]
-        img.paste(heroes_images[0], (133,93),  mask=heroes_images[0])
-        img.paste(heroes_images[1], (158,93),  mask=heroes_images[1])
-        img.paste(heroes_images[2], (183,93),  mask=heroes_images[2])
-        img.paste(heroes_images[3], (208,93),  mask=heroes_images[3])
-        img.paste(heroes_images[4], (232,93),  mask=heroes_images[4])
+        heroes_images = [x.resize((21, 21), resample=Image.Resampling.LANCZOS) for x in self.heroes_images]
+        img.paste(heroes_images[0], (133, 93),  mask=heroes_images[0])
+        img.paste(heroes_images[1], (158, 93),  mask=heroes_images[1])
+        img.paste(heroes_images[2], (183, 93),  mask=heroes_images[2])
+        img.paste(heroes_images[3], (208, 93),  mask=heroes_images[3])
+        img.paste(heroes_images[4], (232, 93),  mask=heroes_images[4])
 
         # Rank
-        rank_image = self.__rank_images()[0].resize((100, 100), resample = Image.Resampling.LANCZOS)
+        rank_image = self.__rank_images()[0].resize((100, 100), resample=Image.Resampling.LANCZOS)
         img.paste(rank_image, (328,20),  mask=rank_image)
         if type(self.__rank_images()[1]) != int:
-            rank_stars_image = self.__rank_images()[1].resize((100, 100), resample = Image.Resampling.LANCZOS)
-            img.paste(rank_stars_image, (328,20),  mask=rank_stars_image)
+            rank_stars_image = self.__rank_images()[1].resize((100, 100), resample=Image.Resampling.LANCZOS)
+            img.paste(rank_stars_image, (328, 20),  mask=rank_stars_image)
         else:
             leaderboard_rank = str(self.__rank_images()[1])
             w, h = draw.textsize(leaderboard_rank)
-            draw.text((380-w, 103-h), leaderboard_rank, font=leaderboard_rank_font, fill=(255,255,255))
-
+            draw.text((380-w, 103-h), leaderboard_rank, font=leaderboard_rank_font, fill=(255, 255, 255))
 
         # Dota plus
         if self.is_plus:
             plus_img = Image.open(f'img/dota_plus.png').convert('RGBA')
-            plus_img = plus_img.resize((27, 31), resample = Image.Resampling.LANCZOS)
+            plus_img = plus_img.resize((27, 31), resample=Image.Resampling.LANCZOS)
             img.paste(plus_img, (103,92),  mask=plus_img)
 
         # First part
-        draw.text((130, 17), self.username,  font=nickname_font, fill=(255,255,255))
-        draw.text((130, 45), 'Last match:',  font=lastmath_text, fill=(142,165,176))
-        draw.text((193, 45), self.last_match,  font=lastmath_data, fill=(255,255,255))
+        draw.text((130, 17), self.username,  font=nickname_font, fill=(255, 255, 255))
+        draw.text((130, 45), 'Last match:',  font=lastmath_text, fill=(142, 165, 176))
+        draw.text((193, 45), self.last_match,  font=lastmath_data, fill=(255, 255, 255))
 
-        draw.text((130, 59), "WON", font=winloserate, fill=(141,165,175))
-        draw.text((190, 59), "LOST", font=winloserate, fill=(141,165,175))
-        draw.text((252, 59), "WINRATE", font=winloserate, fill=(141,165,175))
+        draw.text((130, 59), "WON", font=winloserate, fill=(141, 165, 175))
+        draw.text((190, 59), "LOST", font=winloserate, fill=(141, 165, 175))
+        draw.text((252, 59), "WINRATE", font=winloserate, fill=(141, 165, 175))
 
-        draw.text((130, 68), self.win_count,  font=stats_number, fill=(100,184,105))
-        draw.text((190, 68), self.lose_count,  font=stats_number, fill= (241,74,76))
-        draw.text((252, 68), self.winrate + '%',  font=stats_number, fill= (255,255,255))
+        draw.text((130, 68), self.win_count,  font=stats_number, fill=(100, 184, 105))
+        draw.text((190, 68), self.lose_count,  font=stats_number, fill=(241, 74, 76))
+        draw.text((252, 68), self.winrate + '%',  font=stats_number, fill=(255, 255, 255))
 
         # Image save
-        img.save(f"export/{self.steam_id}.png")
+        img.save(f"123.png")
 
     def __take_avatar(self):
         avatar = Image.open(BytesIO(requests.get(self.avatar_url, stream = True).content))

@@ -1,8 +1,6 @@
 import json
-from datetime import datetime
-
 import requests
-from dateutil import parser
+from datetime import datetime
 
 
 class Parse:
@@ -84,6 +82,7 @@ class Parse:
         start_time = self.__get_player_recent_matches()[0]['start_time']
         data = datetime.fromtimestamp(start_time)
         return data.strftime("%d %B %Y %H:%M:%S")
+
 
 class Rank:
     def __init__(self, userid):
