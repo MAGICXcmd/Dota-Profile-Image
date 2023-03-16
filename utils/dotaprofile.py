@@ -76,7 +76,7 @@ class DotaProfile:
         draw.text((252, 68), self.winrate + '%',  font=stats_number, fill=(255, 255, 255))
 
         # Image save
-        img.save(f"123.png")
+        img.save("./export/{}.png".format(self.userid))
 
     def __take_avatar(self):
         avatar = Image.open(BytesIO(requests.get(self.avatar_url, stream = True).content))
