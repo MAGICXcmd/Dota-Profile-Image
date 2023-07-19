@@ -1,6 +1,6 @@
 from utils.dotaprofile import DotaProfile
 
-DEGUB = False
+DEGUB = True
 
 if DEGUB:
     SteamID = 'https://steamcommunity.com/profiles/76561198850706100/'

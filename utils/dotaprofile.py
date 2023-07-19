@@ -1,10 +1,8 @@
 import re
-
 import requests
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 from utils.parse import Parse, Rank, SteamID32
-
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,7 +15,7 @@ class DotaProfile:
         self.heroes_images = self.__output_images_of_five_favorite_characters()
 
     def capture_this(self):
-        # Fonts
+        # Setup Fonts
         nickname_font = self.__setup_font('OpenSans-Bold', 22)
         lastmath_text = self.__setup_font('OpenSans-Regular', 11)
         lastmath_data = self.__setup_font('OpenSans-SemiBold', 11)
@@ -28,37 +26,37 @@ class DotaProfile:
         img = Image.open(f'{BASE_DIR}/img/background.png')
         draw = ImageDraw.Draw(img)
 
-        # Resize
+        # Resize and paste avatar
         avatar = self.__take_avatar().resize((93, 93), resample=Image.Resampling.LANCZOS)
-        img.paste(avatar, (25,21))
+        img.paste(avatar, (25, 21))
 
         # Heroes images paste
-        heroes_images = [x.resize((21, 21), resample=Image.Resampling.LANCZOS) for x in self.heroes_images]
-        img.paste(heroes_images[0], (133, 93),  mask=heroes_images[0])
-        img.paste(heroes_images[1], (158, 93),  mask=heroes_images[1])
-        img.paste(heroes_images[2], (183, 93),  mask=heroes_images[2])
-        img.paste(heroes_images[3], (208, 93),  mask=heroes_images[3])
-        img.paste(heroes_images[4], (232, 93),  mask=heroes_images[4])
+        hero_positions = [(133, 93), (158, 93), (183, 93), (208, 93), (232, 93)]
+        hero_images_resized = [x.resize((21, 21), resample=Image.Resampling.LANCZOS) for x in self.heroes_images]
+        for position, hero_image in zip(hero_positions, hero_images_resized):
+            img.paste(hero_image, position, mask=hero_image)
 
         # Rank
-        rank_image = self.__rank_images()[0].resize((100, 100), resample=Image.Resampling.LANCZOS)
-        img.paste(rank_image, (328,20),  mask=rank_image)
-        if type(self.__rank_images()[1]) != int:
-            rank_stars_image = self.__rank_images()[1].resize((100, 100), resample=Image.Resampling.LANCZOS)
-            img.paste(rank_stars_image, (328, 20),  mask=rank_stars_image)
+        rank_images = self.__rank_images()
+        rank_image, rank_stars_image = rank_images[0].resize((100, 100), resample=Image.Resampling.LANCZOS), None
+        if len(rank_images) == 2:
+            rank_stars_image = rank_images[1].resize((100, 100), resample=Image.Resampling.LANCZOS)
+        img.paste(rank_image, (328, 20), mask=rank_image)
+        if rank_stars_image:
+            img.paste(rank_stars_image, (328, 20), mask=rank_stars_image)
         else:
-            leaderboard_rank = str(self.__rank_images()[1])
+            leaderboard_rank = str(rank_images[1])
             w, h = draw.textsize(leaderboard_rank)
-            draw.text((380-w, 103-h), leaderboard_rank, font=leaderboard_rank_font, fill=(255, 255, 255))
+            draw.text((380 - w, 103 - h), leaderboard_rank, font=leaderboard_rank_font, fill=(255, 255, 255))
 
         # Dota plus
         if self.userinfo['plus']:
             plus_img = Image.open(f'{BASE_DIR}/img/dota_plus.png').convert('RGBA')
             plus_img = plus_img.resize((27, 31), resample=Image.Resampling.LANCZOS)
-            img.paste(plus_img, (103,92),  mask=plus_img)
+            img.paste(plus_img, (103, 92),  mask=plus_img)
 
         # First part
-        draw.text((130, 17), self.userinfo['username'],  font=nickname_font, fill=(255, 255, 255))
+        draw.text((130, 17), self.userinfo['personaname'],  font=nickname_font, fill=(255, 255, 255))
         draw.text((130, 45), 'Last match:',  font=lastmath_text, fill=(142, 165, 176))
         draw.text((193, 45), self.userinfo['last_match'],  font=lastmath_data, fill=(255, 255, 255))
 
@@ -79,7 +77,7 @@ class DotaProfile:
         return avatar
 
     @staticmethod
-    def __setup_font(self, name: str, size: int):
+    def __setup_font(name: str, size: int):
         return ImageFont.truetype(f'{BASE_DIR}/fonts/{name}.ttf', size, encoding='unic')
 
     def __output_images_of_five_favorite_characters(self):
@@ -106,9 +104,3 @@ class DotaProfile:
             rank_img = Image.open(f'{BASE_DIR}/img/ranks/{rank[0]}.png').convert('RGBA')
             rank_stars_img = Image.open(f'{BASE_DIR}/img/ranks/stars/{rank[1]}.png').convert('RGBA')
             return [rank_img, rank_stars_img]
-
-
-
-
-
-
