@@ -1,15 +1,28 @@
 import json
+
 import requests
 from datetime import datetime
+
+from pathlib import Path
+from steam.steamid import SteamID
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+class SteamID32:
+    @classmethod
+    def get_steamid32(cls, link: str):
+        steamid32 = SteamID.from_url(link).as_32
+        return steamid32
 
 
 class Parse:
     def __init__(self, userid):
         self.userid = userid
-        self.userinfo = self.__get_profile_info()
+        self.userinfo = self.__get_profile_info(userid)
 
-    def __get_profile_info(self):
-        url = f'https://api.opendota.com/api/players/{self.userid}'
+    def __get_profile_info(self, userid):
+        url = f'https://api.opendota.com/api/players/{userid}'
         return requests.get(url).json()
 
     def __get_player_heroes(self):
@@ -28,7 +41,7 @@ class Parse:
         return requests.get(url).json()
 
     def __get_heroes(self):
-        with open('./utils/heroes_id.json', 'r') as f:
+        with open(f'{BASE_DIR}/utils/heroes_id.json', 'r') as f:
             dict = json.load(f)
         return dict
 
