@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GloryCanvas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% assets "home_css" %}
+        <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets "home_js" %}
+        <script type="application/javascript" src="{{ ASSET_URL }}" defer></script>
+    {% endassets %}
+</head>
+<body>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
