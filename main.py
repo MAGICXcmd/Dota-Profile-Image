@@ -9,4 +9,4 @@ else:
 
 
 if __name__ == "__main__":
-    DotaProfile(SteamID)
+    DotaProfile(SteamID).capture_this()
