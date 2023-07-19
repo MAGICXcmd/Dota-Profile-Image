@@ -10,9 +10,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class DotaProfile:
     def __init__(self, steam_link):
-        userid = SteamID32.get_steamid32(steam_link)
-        self.userinfo = Parse.get_user_info(userid)
-        self.heroes_images = self.__output_images_of_five_favorite_characters()
+        if self._is_valid_steam_link(steam_link):
+            userid = SteamID32.get_steamid32(steam_link)
+            self.userinfo = Parse.get_user_info(userid)
+            self.heroes_images = self.__output_images_of_five_favorite_characters()
+        else:
+            raise ValueError("Invalid Steam link format")
+
+    @staticmethod
+    def _is_valid_steam_link(steam_link):
+        pattern = r'(?:https?://)?steamcommunity.com/(?:profiles|id)/[\w/]+'
+        return re.match(pattern, steam_link) is not None
 
     def capture_this(self):
         # Setup Fonts
@@ -68,9 +76,7 @@ class DotaProfile:
         draw.text((190, 68), self.userinfo['lose_count'],  font=stats_number, fill=(241, 74, 76))
         draw.text((252, 68), self.userinfo['winrate'] + '%',  font=stats_number, fill=(255, 255, 255))
 
-        cleaned_username = re.sub(r'[+=\[\]:*?;«,./\\<>@\|\'\s]', '', self.userinfo['personaname'])
-        # Image save
-        img.save('{}/export/{}_{}.png'.format(BASE_DIR, str(self.userinfo['account_id']), cleaned_username))
+        return img
 
     def __take_avatar(self):
         avatar = Image.open(BytesIO(requests.get(self.userinfo['avatar'], stream=True).content))
@@ -104,3 +110,9 @@ class DotaProfile:
             rank_img = Image.open(f'{BASE_DIR}/img/ranks/{rank[0]}.png').convert('RGBA')
             rank_stars_img = Image.open(f'{BASE_DIR}/img/ranks/stars/{rank[1]}.png').convert('RGBA')
             return [rank_img, rank_stars_img]
+
+    def export(self):
+        img = self.capture_this()
+        cleaned_username = re.sub(r'[+=\[\]:*?;«,./\\<>@\|\'\s]', '', self.userinfo['personaname'])
+        # Image save
+        img.save('{}/export/{}_{}.png'.format(BASE_DIR, str(self.userinfo['account_id']), cleaned_username))
