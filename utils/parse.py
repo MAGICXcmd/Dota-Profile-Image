@@ -18,26 +18,26 @@ class SteamID32:
 
 class Parse:
     def __init__(self, userid):
-        self.userid = userid
-        self.userinfo = self.__get_profile_info(userid)
+        self.steam32id = userid
+        self.userinfo = self.__get_profile_info()
 
-    def __get_profile_info(self, userid):
-        url = f'https://api.opendota.com/api/players/{userid}'
+    def __get_profile_info(self):
+        url = f'https://api.opendota.com/api/players/{self.steam32id}'
         return requests.get(url).json()
 
     def __get_player_heroes(self):
-        url = f'https://api.opendota.com/api/players/{self.userid}/heroes'
+        url = f'https://api.opendota.com/api/players/{self.steam32id}/heroes'
         return requests.get(url).json()
 
     def __get_wl(self, game_mode: int = None):
         if game_mode is None:
-            url = f'https://api.opendota.com/api/players/{self.userid}/wl'
+            url = f'https://api.opendota.com/api/players/{self.steam32id}/wl'
         else:
-            url = f'https://api.opendota.com/api/players/{self.userid}/wl?game_mode={str(game_mode)}'
+            url = f'https://api.opendota.com/api/players/{self.steam32id}/wl?game_mode={str(game_mode)}'
         return requests.get(url).json()
 
     def __get_player_recent_matches(self):
-        url = f'https://api.opendota.com/api/players/{self.userid}/recentMatches'
+        url = f'https://api.opendota.com/api/players/{self.steam32id}/recentMatches'
         return requests.get(url).json()
 
     def __get_heroes(self):
@@ -78,23 +78,42 @@ class Parse:
     def is_dota_plus(self):
         return self.userinfo['profile']['plus']
 
-    def get_five_player_heroes_json(self):
+    def get_five_player_heroes(self):
         return self.__get_player_heroes()[0:5]
 
     def get_five_player_heroes_names(self):
         names = []
-        for hero in self.get_five_player_heroes_json():
-            name = self.search_hero_name(str(hero['hero_id']))
+        for hero in self.get_five_player_heroes():
+            name = self.search_hero_name(hero['hero_id'])
             names.append(name)
         return names
 
     def search_hero_name(self, id):
-        return self.__get_heroes()[id]
+        return self.__get_heroes()[str(id)]
 
     def get_last_match_time(self):
         start_time = self.__get_player_recent_matches()[0]['start_time']
         data = datetime.fromtimestamp(start_time)
         return data.strftime("%d %B %Y %H:%M:%S")
+
+    @classmethod
+    def get_user_info(cls, userid):
+        user = Parse(userid)
+        user_info = {}
+        user_info['account_id'] = user.steam32id
+        user_info['steamid'] = user.get_steamid()
+        user_info['personaname'] = user.get_username()
+        user_info['avatar'] = user.get_avatar_url()
+        user_info['profile_url'] = user.get_profile_url()
+        user_info['win_count'] = user.get_won()
+        user_info['lose_count'] = user.get_losses()
+        user_info['rank_tier'] = user.get_rank_tier()
+        user_info['heroes'] = user.get_five_player_heroes_names()
+        user_info['last_match'] = user.get_last_match_time()
+        user_info['plus'] = user.is_dota_plus()
+        user_info['winrate'] = str(round(int(user_info['win_count']) / (int(user_info['win_count']) + int(user_info['lose_count'])) * 100, 2))
+        user_info['get_leaderboard_rank'] = str(user.get_leaderboard_rank())
+        return user_info
 
 
 class Rank:
