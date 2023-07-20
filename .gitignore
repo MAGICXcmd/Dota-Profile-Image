@@ -78,3 +78,4 @@ dmypy.json
 cython_debug/
 /static/gen/
 
+.DS_Store
