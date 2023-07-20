@@ -63,7 +63,7 @@ celerybeat.pid
 env/
 venv/
 ENV/
-export/
+/cards/
 env.bak/
 venv.bak/
 .spyderproject
@@ -77,3 +77,4 @@ dmypy.json
 .pytype/
 cython_debug/
 /static/gen/
+

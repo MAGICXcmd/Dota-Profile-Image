@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <div class="main">
-            <div class="hello">
-                <h1>GloryCanvas</h1>
-                <p>Какое-то описание</p>
-            </div>
+    <div class="main">
+        <div class="hello">
+            <h1>GloryCanvas</h1>
+
+            <form action="/" method="post">
+                <input type="text" name="steam_link" value="" placeholder="Вставьте ссылку на профиль Steam" required>
+                <button style="width: 100%" class="button" type="submit">Отправить</button>
+            </form>
         </div>
+    </div>
 {% endblock %}

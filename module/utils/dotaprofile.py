@@ -2,7 +2,7 @@ import re
 import requests
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
-from utils.parse import Parse, Rank, SteamID32
+from .parse import Parse, Rank, SteamID32
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -111,8 +111,9 @@ class DotaProfile:
             rank_stars_img = Image.open(f'{BASE_DIR}/img/ranks/stars/{rank[1]}.png').convert('RGBA')
             return [rank_img, rank_stars_img]
 
-    def export(self):
+    def export(self, path=None):
         img = self.capture_this()
-        cleaned_username = re.sub(r'[+=\[\]:*?;«,./\\<>@\|\'\s]', '', self.userinfo['personaname'])
         # Image save
-        img.save('{}/export/{}_{}.png'.format(BASE_DIR, str(self.userinfo['account_id']), cleaned_username))
+        path = '{}/cards/{}.png'.format(BASE_DIR.parent, str(self.userinfo['account_id']))
+        img.save(path)
+        return '{}'.format(str(self.userinfo['account_id']))

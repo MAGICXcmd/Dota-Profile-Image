@@ -2,7 +2,6 @@ from flask_assets import Bundle
 
 bundles = {
     'home_css': Bundle(
-        'css/normalize.css',
         'scss/main.scss',
         filters='libsass',
         depends='scss/*.scss',
