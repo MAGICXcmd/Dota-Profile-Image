@@ -8,7 +8,6 @@ bundles = {
         output='gen/home.%(version)s.css'
     ),
     'home_js': Bundle(
-        'js/alpine.js',
         'js/main.js',
         filters='jsmin',
         output='gen/home.%(version)s.js'
