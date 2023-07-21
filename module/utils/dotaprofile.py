@@ -1,9 +1,11 @@
 import re
-import requests
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont
-from .parse import Parse, Rank, SteamID32
 from pathlib import Path
+
+import requests
+from PIL import Image, ImageDraw, ImageFont
+
+from .parse import Parse, Rank, SteamID32
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
