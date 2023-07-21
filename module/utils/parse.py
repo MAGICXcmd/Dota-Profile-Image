@@ -85,7 +85,7 @@ class Parse:
     def get_last_match_time(self) -> str:
         start_time = self._get_player_recent_matches()[0]['start_time']
         data = datetime.fromtimestamp(start_time)
-        return data.strftime("%d %B %Y %H:%M:%S")
+        return data.strftime("%d %B %Y %H:%M")
 
     def _get_player_recent_matches(self) -> list:
         url = f'https://api.opendota.com/api/players/{self.steam32id}/recentMatches'

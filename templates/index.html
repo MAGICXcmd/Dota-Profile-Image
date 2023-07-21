@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="main">
+        <div id="hello" class="hello">
+            <h1>GloryCanvas</h1>
+
+            <form id="getCardForm" hx-post="/" hx-target="#hello" method="post" hx-swap="innerHTML swap:.5s">
+                <input type="text" name="steam_link" value="" placeholder="Вставьте ссылку на профиль Steam" required>
+                <button x-data="{ showLoader: false }" @click="showLoader = true" id="submitButton" style="width: 100%" class="button" type="submit">
+                    <span x-show="!showLoader">Отправить</span>
+                    <div x-cloak class="loader" x-show="showLoader"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('getCardForm').addEventListener('submit', function () {
+            document.getElementById('submitButton').disabled = true;
+        });
+    </script>
+{% endblock %}

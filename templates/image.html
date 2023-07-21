@@ -1,0 +1,9 @@
+<a class="download" href="{{ url_for('serve_image', filename=img) }}" download>
+    <label class="download_container" for="imageInput" id="imageLabel">
+        <span class="photo-container">
+            <span class="tooltip">Нажми, для того, чтобы скачать</span>
+            <img src="/img/{{ img }}.png" alt="">
+        </span>
+    </label>
+</a>
+<a class="button" hx-get="/" hx-target="#hello" hx-swap="innerHTML swap:.5s">На главную</a>
