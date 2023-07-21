@@ -1,39 +1,9 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <div class="main">
-        <div style="width: auto" class="hello">
-            {% if img %}
-                <a class="download" href="{{ url_for('serve_image', filename=img) }}" download>
-                    <label class="download_container" for="imageInput" id="imageLabel">
-                        <span class="photo-container">
-                            <img src="/img/{{ img }}.png" alt="">
-                            <span class="overlay">
-                                <span class="plus-sign">
-                                    Скачать
-                                </span>
-                            </span>
-                        </span>
-                        <span style="
-                                position: absolute;
-                                right: 0;
-                                bottom: 0;
-                                background: #27272B;
-                                line-height: 0;
-                                padding: 3px;
-                                border-radius: 50%;
-                                box-shadow: white 0 0 0 3px;
-                        ">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 20V4M12 4L6 10M12 4L18 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </span>
-                    </label>
-                </a>
-            {% else %}
-                <h1>К сожалению картинки нет ☹️</h1>
-            {% endif %}
-            <a class="button" href="/">На главную</a>
-        </div>
-    </div>
-{% endblock %}
+<a class="download" href="{{ url_for('serve_image', filename=img) }}" download>
+    <label class="download_container" for="imageInput" id="imageLabel">
+        <span class="photo-container">
+            <span class="tooltip">Нажми, для того, чтобы скачать</span>
+            <img src="/img/{{ img }}.png" alt="">
+        </span>
+    </label>
+</a>
+<a class="button" hx-get="/" hx-target="#hello" hx-swap="innerHTML swap:.5s">На главную</a>
