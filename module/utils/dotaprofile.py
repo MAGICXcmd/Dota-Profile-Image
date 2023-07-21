@@ -24,12 +24,12 @@ class DotaProfile:
 
     def capture_this(self):
         # Setup Fonts
-        nickname_font = self.__setup_font('OpenSans-Bold', 22)
-        lastmath_text = self.__setup_font('OpenSans-Regular', 11)
-        lastmath_data = self.__setup_font('OpenSans-SemiBold', 11)
-        winloserate = self.__setup_font('OpenSans-Regular', 12)
-        stats_number = self.__setup_font('OpenSans-Medium', 18)
-        leaderboard_rank_font = self.__setup_font('OpenSans-Medium', 16)
+        nickname_font = self.__setup_font('SFNSDisplay-Bold', 22)
+        lastmath_text = self.__setup_font('SFNSDisplay-Regular', 11)
+        lastmath_data = self.__setup_font('SFNSDisplay-SemiBold', 11)
+        winloserate = self.__setup_font('SFNSDisplay-Regular', 12)
+        stats_number = self.__setup_font('SFNSDisplay-Medium', 18)
+        leaderboard_rank_font = self.__setup_font('SFNSDisplay-Medium', 16)
 
         img = Image.open(f'{BASE_DIR}/img/background.png')
         draw = ImageDraw.Draw(img)
@@ -84,7 +84,7 @@ class DotaProfile:
 
     @staticmethod
     def __setup_font(name: str, size: int):
-        return ImageFont.truetype(f'{BASE_DIR}/fonts/{name}.ttf', size, encoding='unic')
+        return ImageFont.truetype(f'{BASE_DIR}/fonts/{name}.otf', size, encoding='unic')
 
     def __output_images_of_five_favorite_characters(self):
         heroes_images = []
