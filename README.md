@@ -9,7 +9,6 @@
 
 <p align="center">A small web application that provides Dota 2 player statistics in the form of a card.</p>
 
-![Preview](https://i.imgur.com/dId2Egq.png)
 ![Preview](https://i.imgur.com/TpExAUW.png)
 
 <h2 align="center">🤔 Where to start?</h2> 
@@ -55,3 +54,9 @@ steam==1.4.4
 ├── six [required: >=1.10, installed: 1.16.0]
 └── vdf [required: >=3.3, installed: 3.4]
 ```
+
+<h2 align="center">📋 TODO</h2>
+
+- [ ] Add support for multiple languages
+- [ ] Add support for Steam 64 ID, etc
+- [ ] Add error handling on the site
