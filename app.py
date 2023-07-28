@@ -3,7 +3,7 @@ from flask_assets import Environment
 from werkzeug.security import safe_join
 
 from module.utils.dotaprofile import DotaProfile
-from utils.assets import bundles
+from services.assets import bundles
 
 app = Flask(__name__)
 assets = Environment(app)
