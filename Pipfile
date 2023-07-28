@@ -32,3 +32,6 @@ werkzeug = "==2.3.6"
 
 [requires]
 python_version = "3.11"
+
+[scripts]
+server = "flask run"
