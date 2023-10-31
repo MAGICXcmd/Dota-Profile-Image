@@ -78,4 +78,5 @@ dmypy.json
 cython_debug/
 /static/gen/
 
+Pipfile.lock
 .DS_Store
